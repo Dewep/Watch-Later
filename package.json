@@ -1,0 +1,24 @@
+{
+  "name": "watch-later",
+  "version": "1.0.0",
+  "description": "Web application for future movies you want to watch",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dewep/Watch-Later.git"
+  },
+  "author": "Maigret Aurélien",
+  "license": "SEE LICENSE IN LICENCE",
+  "dependencies": {
+    "allocine-api": "^0.1.9",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "mongodb": "^2.2.31",
+    "request": "^2.81.0"
+  }
+}
