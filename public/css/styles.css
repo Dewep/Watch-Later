@@ -1,0 +1,13 @@
+@media screen and (max-width: 880px) {
+  .s-sidebar.open {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+    transition: transform .2s ease, -webkit-transform .2s ease;
+    transition: transform .2s ease;
+    transition: -webkit-transform .2s ease;
+  }
+  .s-sidebar.open + .docs-nav-clear {
+    display: block;
+  }
+}
