@@ -4,7 +4,7 @@ class Email {
     this.app = app
   }
 
-  run () {
+  async run () {
   }
 }
 

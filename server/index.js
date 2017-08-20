@@ -18,7 +18,7 @@ class Server {
     next()
   }
 
-  run () {
+  async run () {
     this.server.listen(this.config.port, this.config.host, () => {
       console.info('[server] running on', `${this.config.host}:${this.config.port}`)
     })

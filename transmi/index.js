@@ -4,7 +4,7 @@ class Transmi {
     this.app = app
   }
 
-  run () {
+  async run () {
   }
 }
 

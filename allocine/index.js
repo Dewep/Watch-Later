@@ -4,7 +4,7 @@ class Allocine {
     this.app = app
   }
 
-  run () {
+  async run () {
   }
 }
 
