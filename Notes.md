@@ -38,17 +38,17 @@ Genres for movies (https://developers.themoviedb.org/3/genres/get-movie-list):
 - War (10752)
 - Western (37)
 
+Default genres: 28, 12, 35, 80, 18, 10749, 878, 53
+
 ## Auth/Profile page
 
 User model:
 
-- Username
-- Bcrypted password
 - Email
+- Bcrypted password
 - Transmi API key
 - Genres for movies filter
-- Theatres region (`FR`)
-- Query regions (`en-US,fr-FR`)
+- Lists (`watch-later`, `ignored`, `watched`)
 
 ## News page
 

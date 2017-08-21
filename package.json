@@ -14,6 +14,7 @@
   "license": "SEE LICENSE IN LICENCE",
   "dependencies": {
     "allocine-api": "^0.1.9",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "lodash": "^4.17.4",

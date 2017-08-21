@@ -32,6 +32,31 @@ class Mongo {
     const db = await this.dbPromise
     return await db.collection(collectionName)
   }
+
+  async insert (collection, document) {
+    const db = await this._instance(collection)
+    return await db.insertOne(document)
+  }
+
+  async insertMany (collection, documents) {
+    const db = await this._instance(collection)
+    return await db.insertMany(documents)
+  }
+
+  async update (collection, query, document) {
+    const db = await this._instance(collection)
+    return await db.updateOne(document)
+  }
+
+  async remove (collection, query) {
+    const db = await this._instance(collection)
+    return await db.deleteOne(query)
+  }
+
+  async removeMany (collection, query) {
+    const db = await this._instance(collection)
+    return await db.deleteMany(query)
+  }
 }
 
 module.exports = Mongo

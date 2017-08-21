@@ -7,7 +7,19 @@ class TMDb {
   }
 
   async run () {
-    // this.app.tasks.runTask('update-news').catch(() => {})
+    this.app.tasks.runTask('update-news').catch(() => {})
+  }
+
+  imageUrl (filePath, size) {
+    return `https://image.tmdb.org/t/p/${size}${filePath}`
+  }
+
+  posterUrl (filePath, size) {
+    return this.imageUrl(filePath, size || 'w342')
+  }
+
+  backdropUrl (filePath, size) {
+    return this.imageUrl(filePath, size || 'w1280')
   }
 
   async request (endPoint, qs, body, method) {
@@ -22,6 +34,7 @@ class TMDb {
       method,
       url: `https://api.themoviedb.org/3${endPoint}`,
       qs,
+      json: true,
       body
     }
     try {
