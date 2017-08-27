@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const authRoutes = require('./auth')
 
 class Server {
   constructor (config, app) {
@@ -10,6 +11,9 @@ class Server {
 
     this.server.use(bodyParser.json({ limit: '10mb' }))
     this.server.use(this.logger)
+
+    this.server.use(authRoutes)
+
     this.server.use(express.static('public'))
   }
 

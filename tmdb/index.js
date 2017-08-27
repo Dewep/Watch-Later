@@ -7,7 +7,7 @@ class TMDb {
   }
 
   async run () {
-    this.app.tasks.runTask('update-news').catch(() => {})
+    // this.app.tasks.runTask('update-news').catch(() => {})
   }
 
   imageUrl (filePath, size) {
@@ -28,7 +28,7 @@ class TMDb {
       body = '{}'
     }
     if (this.config.apiKey) {
-      qs.api_key = this.config.apiKey
+      qs['api_key'] = this.config.apiKey
     }
     var options = {
       method,
