@@ -4,7 +4,9 @@
   "description": "Web application for future movies you want to watch",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build-app": "brunch build",
+    "watch-app": "brunch watch"
   },
   "repository": {
     "type": "git",
@@ -16,11 +18,24 @@
     "allocine-api": "^0.1.9",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
+    "brunch": "^2.10.10",
     "express": "^4.15.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "mongodb": "^2.2.31",
     "request": "^2.81.0",
-    "request-promise": "^4.2.1"
+    "request-promise": "^4.2.1",
+    "vue": "^2.4.2",
+    "vue-resource": "^1.3.4",
+    "vue-router": "^2.7.0",
+    "vuex": "^2.3.1"
+  },
+  "devDependencies": {
+    "babel-brunch": "^6.1.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "sass-brunch": "^2.10.4",
+    "vue-brunch": "^2.0.1"
   }
 }

@@ -1,4 +1,6 @@
 {
+    "extends": ["vue"],
+    "plugins": ["vue"],
     "env": {
         "browser": true,
         "commonjs": true,
