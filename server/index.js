@@ -12,7 +12,11 @@ class Server {
     this.server.use(bodyParser.json({ limit: '10mb' }))
     this.server.use(this.logger)
 
-    this.server.use(authRoutes)
+    this.server.use('/api/auth', authRoutes.router(this.app))
+    this.server.use('/api', authRoutes.authorizationCheck)
+    this.server.use('/api/auth', authRoutes.routerAuthenticated(this.app))
+
+    this.server.use(this.errorHandling)
 
     this.server.use(express.static('public'))
   }
@@ -20,6 +24,15 @@ class Server {
   logger (req, res, next) {
     console.info('[server]', req.method, req.originalUrl, 'from', req.ip)
     next()
+  }
+
+  errorHandling (err, req, res, next) {
+    if (!err.status) {
+      err.status = 400
+    }
+    res.status(err.status)
+    res.json({ error: err.message })
+    console.error(err.stack)
   }
 
   async run () {

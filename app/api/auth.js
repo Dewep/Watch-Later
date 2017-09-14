@@ -6,14 +6,14 @@ export default {
     if (apiKey) {
       headers.Authorization = apiKey
     }
-    return http.get('/auth/', { headers })
+    return http.get('/api/auth/', { headers })
   },
 
   auth (email, password) {
-    return http.post('/auth/', { email, password }, { catchUnauthorized: false })
+    return http.post('/api/auth/', { email, password }, { catchUnauthorized: false })
   },
 
   logout (team) {
-    return http.delete('/auth/', { catchUnauthorized: false })
+    return http.delete('/api/auth/', { catchUnauthorized: false })
   }
 }

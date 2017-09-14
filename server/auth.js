@@ -1,20 +1,44 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
+const utils = require('./utils')
 
 const apiKeys = {}
 
 const authRouter = (app) => {
   const router = express.Router()
 
-  router.post('/', (req, res, next) => {
-    // app.mongo.removeMany('news', {})
-    // TODO
-    res.json({})
-  })
+  router.post('/', utils.asyncUse(async (req, res, next) => {
+    const user = await app.mongo.getOne('user', { email: req.body.email })
+    await new Promise(function (resolve, reject) {
+      bcrypt.compare(req.body.password, user.password, function (err, res) {
+        if (err) {
+          reject(err)
+        } else if (res === true) {
+          resolve()
+        } else {
+          reject(new Error('Bad password'))
+        }
+      })
+    })
+    const apiKey = await new Promise(function (resolve, reject) {
+      crypto.randomBytes(48, function (err, buffer) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(buffer.toString('hex'))
+        }
+      })
+    })
+    delete user.password
+    apiKeys[apiKey] = user
+    res.json({ apiKey, user })
+  }))
 
   return router
 }
 
-const authRouterAuthenticated = () => {
+const authRouterAuthenticated = (app) => {
   const router = express.Router()
 
   router.get('/', (req, res, next) => {
