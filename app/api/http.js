@@ -49,7 +49,8 @@ const wrapRequest = (uri, options, makeRequest) => {
       }
     }
 
-    const request = makeRequest()
+    console.log('options.headers.Authorization', options.headers.Authorization)
+    const request = makeRequest(uri, options)
 
     if (options.formatResponse !== false) {
       return request.then(response => response.body)
@@ -62,18 +63,18 @@ const wrapRequest = (uri, options, makeRequest) => {
 
 export default {
   get (uri, options) {
-    return wrapRequest(uri, options, () => Vue.http.get(uri, options))
+    return wrapRequest(uri, options, (uri, options) => Vue.http.get(uri, options))
   },
 
   delete (uri, options) {
-    return wrapRequest(uri, options, () => Vue.http.delete(uri, options))
+    return wrapRequest(uri, options, (uri, options) => Vue.http.delete(uri, options))
   },
 
   post (uri, data, options) {
-    return wrapRequest(uri, options, () => Vue.http.post(uri, data, options))
+    return wrapRequest(uri, options, (uri, options) => Vue.http.post(uri, data, options))
   },
 
   put (uri, data, options) {
-    return wrapRequest(uri, options, () => Vue.http.put(uri, data, options))
+    return wrapRequest(uri, options, (uri, options) => Vue.http.put(uri, data, options))
   }
 }

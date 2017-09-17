@@ -1,5 +1,7 @@
 import auth from './auth'
+import news from './news'
 
 export default {
-  auth
+  auth,
+  news
 }

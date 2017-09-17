@@ -4,7 +4,7 @@
       <div class="s-brand">
         <router-link to="home" class="s-logo tooltip tooltip-bottom" data-tooltip="github.com/Dewep/Watch-Later" @click.native="sidebar = false">
           <img src="/icons/favicon-96x96.png" alt="logo" />
-          <h2>Watch-Later</h2>
+          <h2>Watch-Later<br><small v-if="user"><sup>{{ user.email }}</sup></small></h2>
         </router-link>
         <div class="menu-btn">
           <a href="#sidebar" @click.prevent="sidebar = true" class="btn btn-link btn-action">
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import guards from '../router/guards'
 
 export default {
@@ -50,6 +51,16 @@ export default {
   data () {
     return {
       sidebar: false
+    }
+  },
+
+  computed: mapGetters(['user']),
+
+  watch: {
+    user (newUser) {
+      if (newUser) {
+        this.$router.push({ name: 'home' })
+      }
     }
   }
 }

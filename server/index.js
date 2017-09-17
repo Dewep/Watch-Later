@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const authRoutes = require('./auth')
+const newsRoutes = require('./news')
 
 class Server {
   constructor (config, app) {
@@ -15,6 +16,7 @@ class Server {
     this.server.use('/api/auth', authRoutes.router(this.app))
     this.server.use('/api', authRoutes.authorizationCheck)
     this.server.use('/api/auth', authRoutes.routerAuthenticated(this.app))
+    this.server.use('/api/news', newsRoutes.router(this.app))
 
     this.server.use(this.errorHandling)
 

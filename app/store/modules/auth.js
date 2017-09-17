@@ -16,7 +16,7 @@ const getters = {
 const actions = {
   auth ({ commit }, { email, password }) {
     commit('AUTH_REQUEST', {})
-    authApi.auth(email, password).then(data => {
+    return authApi.auth(email, password).then(data => {
       commit('AUTH_REQUEST_SUCCESS', data)
     }).catch(error => {
       commit('AUTH_REQUEST_ERROR', { error })
@@ -25,7 +25,7 @@ const actions = {
 
   autolog ({ commit }, { apiKey }) {
     commit('AUTH_REQUEST', {})
-    authApi.autolog(apiKey).then(data => {
+    return authApi.autolog(apiKey).then(data => {
       commit('AUTH_REQUEST_SUCCESS', { apiKey, user: data })
     }).catch(error => {
       commit('AUTH_REQUEST_ERROR', { error })

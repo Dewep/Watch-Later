@@ -5,6 +5,7 @@
       <p class="empty-subtitle">Authentication required</p>
       <div class="empty-action">
         <form @submit.prevent="onSubmit">
+          <p class="toast toast-success" v-if="user">Connecting...</p>
           <p class="toast toast-error" v-if="authRequest.error">{{ authRequest.error }}</p>
           <div class="form-group">
             <input class="form-input text-center" v-model="email" type="email" id="input-auth-email" placeholder="Email" />
@@ -38,15 +39,21 @@ export default {
     }
   },
 
-  computed: {
-    ...mapGetters(['authRequest'])
-  },
+  computed: mapGetters(['authRequest', 'user']),
 
   methods: {
     ...mapActions(['auth']),
     onSubmit () {
       if (this.email && this.password && !this.authRequest.loading) {
         this.auth({ email: this.email, password: this.password })
+      }
+    }
+  },
+
+  watch: {
+    user (newUser) {
+      if (newUser) {
+        this.$router.push({ name: 'home' })
       }
     }
   }

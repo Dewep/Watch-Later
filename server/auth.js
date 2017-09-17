@@ -54,7 +54,7 @@ const authRouterAuthenticated = (app) => {
 }
 
 const authorizationCheck = (req, res, next) => {
-  if (req.headers.authorization && apiKeys.indexOf(req.headers.authorization) !== -1) {
+  if (req.headers.authorization && apiKeys[req.headers.authorization]) {
     req.apiKey = req.headers.authorization
     req.user = apiKeys[req.headers.authorization]
     return next()
