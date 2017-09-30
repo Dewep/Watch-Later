@@ -19,6 +19,9 @@ const actions = {
     }).catch(error => {
       commit('NEWS_REQUEST_ERROR', { error })
     })
+  },
+  discardFirstNews ({ commit }) {
+    commit('DISCARD_FIRST_NEWS', {})
   }
 }
 
@@ -39,6 +42,14 @@ const mutations = {
 
   NEWS_REQUEST_ERROR (state, { error }) {
     Vue.set(state, 'request', { loading: false, error })
+  },
+
+  DISCARD_FIRST_NEWS (state) {
+    if (state.news && state.news.length > 0) {
+      const news = [...state.news]
+      news.splice(0, 1)
+      Vue.set(state, 'news', news)
+    }
   }
 }
 

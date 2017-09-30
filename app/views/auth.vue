@@ -1,6 +1,9 @@
 <template>
   <div id="auth-page">
     <div class="empty">
+      <div class="empty-icon">
+        <img src="/icons/favicon-96x96.png" alt="logo" />
+      </div>
       <p class="empty-title h5">Watch-Later</p>
       <p class="empty-subtitle">Authentication required</p>
       <div class="empty-action">
@@ -34,8 +37,8 @@ export default {
 
   data () {
     return {
-      email: '',
-      password: ''
+      email: 'dewep.net@gmail.com',
+      password: 'toto42'
     }
   },
 
@@ -53,7 +56,7 @@ export default {
   watch: {
     user (newUser) {
       if (newUser) {
-        this.$router.push({ name: 'home' })
+        this.$router.push(window.wantedConnectedRoute || { name: 'home' })
       }
     }
   }

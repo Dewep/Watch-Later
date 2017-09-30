@@ -1,14 +1,19 @@
 <template>
   <div id="news" class="container">
-    <h3 class="s-title">News <small v-if="remainingMovies"><sup>{{ remainingMovies }} movies remaining</sup></small></h3>
+    <h3 class="s-title">News <small v-if="remainingMovies"><sup>{{ remainingMovies }} movies remaining</sup></small> <i class="loading float-right mr-2" v-if="newsRequest.loading"></i></h3>
     <p class="toast toast-error" v-if="newsRequest.error">{{ newsRequest.error }}</p>
-    <p class="toast" v-if="newsRequest.loading">Loading... <i class="loading"></i></p>
-    <p class="toast" v-else-if="!movie">No more new movies. <button class="btn btn-sm" @click="loadNews({})">Refresh</button></p>
-    <div v-else>
+    <p class="toast" v-if="!newsRequest.loading && !movie">No more new movies. <button class="btn btn-sm" @click="loadNews({})">refresh</button></p>
+    <div v-else-if="!newsRequest.loading">
+      <p class="toast toast-error" v-if="actionError">{{ actionError }}</p>
+      <div class="btn-group btn-group-block mt-2" :class="{ loading: actionLoading }">
+        <button class="btn" @click.prevent="actionMovie(false)">Ignore this movie</button>
+        <button class="btn btn-primary" @click.prevent="actionMovie(true)">I want to watch it!</button>
+      </div>
       <movie :tmdb-id="movie.tmdb_id" :pre-data="movie"></movie>
-      <div class="btn-group btn-group-block mt-2">
-        <button class="btn">Ignore this movie</button>
-        <button class="btn btn-primary">I want to watch it!</button>
+      <p class="toast toast-error" v-if="actionError">{{ actionError }}</p>
+      <div class="btn-group btn-group-block mt-2" :class="{ loading: actionLoading }">
+        <button class="btn" @click.prevent="actionMovie(false)">Ignore this movie</button>
+        <button class="btn btn-primary" @click.prevent="actionMovie(true)">I want to watch it!</button>
       </div>
     </div>
   </div>
@@ -25,6 +30,8 @@ export default {
 
   data () {
     return {
+      actionLoading: false,
+      actionError: null
     }
   },
 
@@ -48,7 +55,21 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadNews'])
+    ...mapActions(['loadNews', 'discardFirstNews', 'setMovieWatchLater', 'setMovieIgnored']),
+    actionMovie (isWatchLater) {
+      if (this.movies.length && this.movie.tmdb_id) {
+        this.actionLoading = true
+        this.actionError = null
+        const fct = isWatchLater ? this.setMovieWatchLater : this.setMovieIgnored
+        fct({ tmdbId: this.movie.tmdb_id }).then(() => {
+          this.discardFirstNews()
+          this.actionLoading = false
+        }).catch(error => {
+          this.actionLoading = false
+          this.actionError = error
+        })
+      }
+    }
   }
 }
 </script>

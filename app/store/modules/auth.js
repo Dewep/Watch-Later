@@ -10,7 +10,8 @@ const state = {
 const getters = {
   apiKey: state => state.apiKey || null,
   user: state => state.user || null,
-  authRequest: state => state.request || { loading: false }
+  authRequest: state => state.request || { loading: false },
+  myMoviesIds: state => (state.user && state.user.watchLater) || []
 }
 
 const actions = {
@@ -68,6 +69,26 @@ const mutations = {
     try {
       window.localStorage.removeItem('apiKey')
     } catch (err) {}
+  },
+
+  SET_MOVIE_WATCH_LATER (state, { tmdbId }) {
+    if (state.user) {
+      const watchLater = (state.user.watchLater || []).filter(id => id !== tmdbId)
+      const ignored = (state.user.ignored || []).filter(id => id !== tmdbId)
+      watchLater.push(tmdbId)
+      Vue.set(state.user, 'watchLater', watchLater)
+      Vue.set(state.user, 'ignored', ignored)
+    }
+  },
+
+  SET_MOVIE_IGNORED (state, { tmdbId }) {
+    if (state.user) {
+      const watchLater = (state.user.watchLater || []).filter(id => id !== tmdbId)
+      const ignored = (state.user.ignored || []).filter(id => id !== tmdbId)
+      ignored.push(tmdbId)
+      Vue.set(state.user, 'watchLater', watchLater)
+      Vue.set(state.user, 'ignored', ignored)
+    }
   }
 }
 

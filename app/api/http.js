@@ -49,7 +49,6 @@ const wrapRequest = (uri, options, makeRequest) => {
       }
     }
 
-    console.log('options.headers.Authorization', options.headers.Authorization)
     const request = makeRequest(uri, options)
 
     if (options.formatResponse !== false) {
