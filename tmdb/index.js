@@ -40,7 +40,7 @@ class TMDb {
     try {
       return await request(options)
     } catch (err) {
-      const simplifiedError = new Error(err.error || err.message)
+      const simplifiedError = new Error(err.message || err.error)
       simplifiedError.name = err.name
       simplifiedError.statusCode = err.statusCode
       throw simplifiedError
@@ -50,6 +50,14 @@ class TMDb {
   async discover (qs) {
     const response = await this.request('/discover/movie', qs)
     return response.results
+  }
+
+  async movieDetails (id, language) {
+    const qs = {
+      language: language || 'en-US',
+      'append_to_response': 'alternative_titles,release_dates,videos'
+    }
+    return this.request(`/movie/${id}`, qs)
   }
 }
 

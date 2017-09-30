@@ -63,9 +63,14 @@ class Mongo {
     return db.insertMany(documents)
   }
 
-  async update (collection, query, document) {
+  async update (collection, query, update) {
     const db = await this._instance(collection)
-    return db.updateOne(document)
+    return db.updateOne(query, update)
+  }
+
+  async updateMany (collection, query, update) {
+    const db = await this._instance(collection)
+    return db.updateMany(query, update)
   }
 
   async remove (collection, query) {

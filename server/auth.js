@@ -31,7 +31,7 @@ const authRouter = (app) => {
       })
     })
     delete user.password
-    apiKeys[apiKey] = user
+    apiKeys[apiKey] = user.email
     res.json({ apiKey, user })
   }))
 
@@ -53,16 +53,26 @@ const authRouterAuthenticated = (app) => {
   return router
 }
 
-const authorizationCheck = (req, res, next) => {
-  if (req.headers.authorization && apiKeys[req.headers.authorization]) {
-    req.apiKey = req.headers.authorization
-    req.user = apiKeys[req.headers.authorization]
-    return next()
-  }
+const authorizationCheck = app => {
+  return utils.asyncUse(async (req, res, next) => {
+    if (req.headers.authorization && apiKeys[req.headers.authorization]) {
+      req.apiKey = req.headers.authorization
+      try {
+        const user = await app.mongo.getOne('user', { email: apiKeys[req.headers.authorization] })
+        delete user.password
+        req.user = user
+      } catch (e) {
+        const err = new Error('Session expired')
+        err.status = 401
+        next(err)
+      }
+      return next()
+    }
 
-  const err = new Error('Unauthorized')
-  err.status = 401
-  next(err)
+    const err = new Error('Unauthorized')
+    err.status = 401
+    next(err)
+  })
 }
 
 module.exports.router = authRouter

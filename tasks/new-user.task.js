@@ -20,8 +20,7 @@ async function newUser (app, parameters) {
     password,
     genres: parameters.genres || [28, 12, 35, 80, 18, 10749, 878, 53],
     watchLater: [],
-    ignored: [],
-    watched: []
+    ignored: []
   }
 
   await app.mongo.insert('user', user)
