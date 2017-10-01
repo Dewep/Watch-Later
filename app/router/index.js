@@ -7,6 +7,7 @@ import ProfileComponent from '../views/profile.vue'
 import NewsComponent from '../views/news.vue'
 import MovieComponent from '../views/movie.vue'
 import MoviesComponent from '../views/movies.vue'
+import AdminComponent from '../views/admin.vue'
 
 Vue.use(Router)
 
@@ -21,6 +22,7 @@ export default new Router({
         { name: 'home', path: '', redirect: 'news' },
         { name: 'profile', path: '/profile', component: ProfileComponent },
         { name: 'news', path: '/news', component: NewsComponent },
+        { name: 'admin', path: '/admin', component: AdminComponent },
         { name: 'movies', path: '/movies', component: MoviesComponent },
         { name: 'movie', path: '/movies/:tmdbId', component: MovieComponent, props: true }
       ]

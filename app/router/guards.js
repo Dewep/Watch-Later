@@ -16,5 +16,16 @@ export default {
       window.wantedConnectedRoute = { path: to.path }
       next({ name: 'auth' })
     }
+  },
+
+  admin (to, from, next) {
+    if (!store.getters.user) {
+      window.wantedConnectedRoute = { path: to.path }
+      next({ name: 'auth' })
+    } else if (!store.getters.user.isAdmin) {
+      next({ name: 'home' })
+    } else {
+      next()
+    }
   }
 }

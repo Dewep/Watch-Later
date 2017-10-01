@@ -16,8 +16,8 @@
             <li class="menu-item">
               <router-link :to="{ name: 'movies' }" @click.native="sidebar = false">My movies</router-link>
             </li>
-            <li class="menu-item">
-              <router-link :to="{ name: 'profile' }" @click.native="sidebar = false">My profile</router-link>
+            <li class="menu-item" v-if="user.isAdmin">
+              <router-link :to="{ name: 'admin' }" @click.native="sidebar = false">Administration</router-link>
             </li>
           </ul>
         </div>
