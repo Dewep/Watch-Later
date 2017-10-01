@@ -15,6 +15,13 @@
     <img class="poster" :src="poster" v-if="poster">
     <table class="table table-striped">
       <tbody>
+        <tr v-if="watchLaterAction !== false">
+          <th>Watch Later</th>
+          <td>
+            <button class="btn btn-sm" @click="setMovieIgnored({ tmdbId })" v-if="isInMyMovies">Remove from your movies</button>
+            <button class="btn btn-sm btn-primary" @click="setMovieWatchLater({ tmdbId })" v-else>Add to your movies</button>
+          </td>
+        </tr>
         <tr v-if="data.original_title !== data.title_en && data.original_title !== data.title_fr">
           <th>Original title</th>
           <td>{{ data.original_title }}</td>
@@ -34,9 +41,9 @@
           <th>Genres</th>
           <td><span class="label label-primary mr-1" v-for="genre in data.genres" :key="genre">{{ genre }}</span></td>
         </tr>
-        <tr v-if="data.runtime">
+        <tr v-if="data.duration">
           <th>Duration</th>
-          <td>{{ Math.round(data.runtime / 60) }}h{{ Math.round(data.runtime % 60) }}</td>
+          <td>{{ data.duration }}</td>
         </tr>
         <tr v-if="data.homepage_en || data.homepage_fr">
           <th>Homepage</th>
@@ -56,26 +63,24 @@
     <div class="clearfix"></div>
     <div v-if="data.videos_fr && data.videos_fr.length" class="mt-2">
       <h4>French videos <img class="flag" src="/icons/flag-fr.png"></h4>
-      <div class="video-responsive my-1" v-for="video in data.videos_fr" :key="video">
-        <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${video}`" allowfullscreen></iframe>
-      </div>
+      <youtube class="my-1" :youtube-id="video" v-for="video in data.videos_fr" :key="video"></youtube>
     </div>
     <div v-if="data.videos_en && data.videos_en.length" class="mt-2">
       <h4>English videos <img class="flag" src="/icons/flag-en.png"></h4>
-      <div class="video-responsive my-1" v-for="video in data.videos_en" :key="video">
-        <iframe width="560" height="315" :src="`https://www.youtube.com/embed/${video}`" allowfullscreen></iframe>
-      </div>
+      <youtube class="my-1" :youtube-id="video" v-for="video in data.videos_en" :key="video"></youtube>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Youtube from './youtube.vue'
 
 export default {
   name: 'movie',
 
-  props: ['tmdbId', 'preData'],
+  props: ['tmdbId', 'preData', 'watchLaterAction'],
+  components: { Youtube },
 
   data () {
     return {
@@ -83,9 +88,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['getMovie']),
+    ...mapGetters(['getMovie', 'myMoviesIds']),
     movie () {
       return this.getMovie(this.tmdbId)
+    },
+    isInMyMovies () {
+      return this.myMoviesIds.indexOf(+this.tmdbId) !== -1
     },
     fullData () {
       if (this.movie.loading === null) {
@@ -108,7 +116,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadMovie'])
+    ...mapActions(['loadMovie', 'setMovieWatchLater', 'setMovieIgnored'])
   }
 }
 </script>

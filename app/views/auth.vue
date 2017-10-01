@@ -56,7 +56,9 @@ export default {
   watch: {
     user (newUser) {
       if (newUser) {
-        this.$router.push(window.wantedConnectedRoute || { name: 'home' })
+        const wantedConnectedRoute = window.wantedConnectedRoute || { name: 'home' }
+        window.wantedConnectedRoute = null
+        this.$router.push(wantedConnectedRoute)
       }
     }
   }
@@ -67,7 +69,7 @@ export default {
 #auth-page {
   display: flex;
   align-content: center;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
   min-width: 320px;

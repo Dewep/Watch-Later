@@ -9,7 +9,7 @@
         <button class="btn" @click.prevent="actionMovie(false)">Ignore this movie</button>
         <button class="btn btn-primary" @click.prevent="actionMovie(true)">I want to watch it!</button>
       </div>
-      <movie :tmdb-id="movie.tmdb_id" :pre-data="movie"></movie>
+      <movie :tmdb-id="movie.tmdb_id" :pre-data="movie" :watch-later-action="false"></movie>
       <p class="toast toast-error" v-if="actionError">{{ actionError }}</p>
       <div class="btn-group btn-group-block mt-2" :class="{ loading: actionLoading }">
         <button class="btn" @click.prevent="actionMovie(false)">Ignore this movie</button>
