@@ -44,6 +44,7 @@ async function updateNews (app) {
   await app.mongo.insertMany('news', moviesList)
 
   console.log('[tasks.update-news]', moviesList.length, 'movies added')
+  return { addedMovies: moviesList.length }
 }
 
 module.exports = updateNews

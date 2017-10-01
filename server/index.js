@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const authRoutes = require('./auth')
 const newsRoutes = require('./news')
 const movieRoutes = require('./movie')
+const adminRoutes = require('./admin')
 
 class Server {
   constructor (config, app) {
@@ -19,6 +20,7 @@ class Server {
     this.server.use('/api/auth', authRoutes.routerAuthenticated(this.app))
     this.server.use('/api/news', newsRoutes.router(this.app))
     this.server.use('/api/movie', movieRoutes.router(this.app))
+    this.server.use('/api/admin', adminRoutes.router(this.app))
 
     this.server.use(this.errorHandling)
 

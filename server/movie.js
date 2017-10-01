@@ -58,7 +58,7 @@ const movieRouter = (app) => {
   }))
 
   router.get('/:tmdbId/', utils.asyncUse(async (req, res, next) => {
-    const movie = getOrFetchMovie(app, +req.params.tmdbId)
+    const movie = await getOrFetchMovie(app, +req.params.tmdbId)
     return res.json({ movie })
   }))
 
