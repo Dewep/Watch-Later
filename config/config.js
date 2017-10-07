@@ -9,6 +9,12 @@ module.exports = {
   transmi: {
     baseUrl: null // https://github.com/zajdaf/Transmi (add the '/' at the end)
   },
+  email: {
+    mailjet: { // https://app.mailjet.com/account/setup
+      username: null,
+      password: null
+    }
+  },
   tasks: {
     trigger: [
       {
