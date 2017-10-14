@@ -19,9 +19,15 @@ async function updateNews (app) {
     'sort_by': 'popularity.desc'
   })
 
+  const oldNews = await app.mongo.find('news')
+  const oldTmdbIds = oldNews.map(n => n.tmdb_id)
+  const newTmdbIds = []
   const movies = {}
 
   const addMovie = (movie, lang) => {
+    if (oldTmdbIds.indexOf(movie.id) === -1) {
+      newTmdbIds.push(movie.id)
+    }
     if (!movies[movie.id]) {
       movies[movie.id] = {
         'tmdb_id': movie.id,
@@ -39,12 +45,44 @@ async function updateNews (app) {
   inTheatres.forEach(movie => addMovie(movie, 'fr'))
 
   const moviesList = Object.values(movies)
-
   await app.mongo.removeMany('news', {})
   await app.mongo.insertMany('news', moviesList)
 
-  console.log('[tasks.update-news]', moviesList.length, 'movies added')
-  return { addedMovies: moviesList.length }
+  const users = await app.mongo.find('user')
+  const emails = []
+
+  for (let index = 0; index < users.length; index++) {
+    const user = users[index]
+    const userMovies = newTmdbIds.filter(tmdbId => {
+      if (user.watchLater.indexOf(tmdbId) !== -1) {
+        return false
+      }
+      if (user.ignored.indexOf(tmdbId) !== -1) {
+        return false
+      }
+      if (user.genres.some(genreId => movies[tmdbId].genres.indexOf(genreId) !== -1)) {
+        return true
+      }
+      return false
+    }).map(tmdbId => ({
+      tmdbId,
+      title: movies[tmdbId].title_fr || movies[tmdbId].title_en || `#${tmdbId}`,
+      poster: movies[tmdbId].poster_fr || movies[tmdbId].poster_en || '',
+      releaseDateEn: movies[tmdbId].release_date_en,
+      releaseDateFr: movies[tmdbId].release_date_fr,
+      overview: movies[tmdbId].overview_fr || movies[tmdbId].overview_en || ''
+    }))
+
+    if (userMovies.length) {
+      await app.email.sendUpdates(user.email, user.name || 'DefaultName', userMovies)
+      emails.push(user.email)
+    }
+  }
+
+  const res = { addedMovies: moviesList.length, newMovies: newTmdbIds.length, emails }
+
+  console.log('[tasks.update-news]', res)
+  return res
 }
 
 module.exports = updateNews

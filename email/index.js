@@ -9,7 +9,7 @@ class Email {
   async run () {
   }
 
-  async sendEmail (to, subject, htmlContent, textContent) {
+  async sendEmail (to, name, subject, htmlContent, textContent) {
     const options = {
       method: 'POST',
       url: 'https://api.mailjet.com/v3.1/send',
@@ -27,8 +27,8 @@ class Email {
             },
             To: [
               {
-                Email: to
-                // Name: "Passenger"
+                Email: to,
+                Name: name
               }
             ],
             Subject: subject,
@@ -39,6 +39,11 @@ class Email {
       }
     }
     return await request(options)
+  }
+
+  async sendUpdates (email, name, movies) {
+    const html = await this.app.template.render('email/updates', { name, movies })
+    await this.sendEmail(email, name, 'New movies available on your Watch-Later', html)
   }
 }
 
