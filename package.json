@@ -19,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "brunch": "^2.10.10",
+    "ejs": "^2.5.7",
     "express": "^4.15.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
