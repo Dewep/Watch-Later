@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import MainComponent from '../views/main.vue'
 import AuthComponent from '../views/auth.vue'
+import PasswordComponent from '../views/password.vue'
 import ProfileComponent from '../views/profile.vue'
 import NewsComponent from '../views/news.vue'
 import MovieComponent from '../views/movie.vue'
@@ -15,6 +16,7 @@ export default new Router({
   linkActiveClass: 'active',
   routes: [
     { name: 'auth', path: '/auth', component: AuthComponent },
+    { name: 'password', path: '/password/:token?', component: PasswordComponent, props: true },
     {
       path: '',
       component: MainComponent,
