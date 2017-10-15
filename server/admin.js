@@ -23,7 +23,12 @@ const adminRouter = (app) => {
       response.result = await app.tasks.runTask(req.params.taskName, req.body)
     } catch (err) {
       response.status = 'failed'
-      response.result = err
+      response.result = {
+        error: {
+          name: err.name,
+          message: err.message
+        }
+      }
     }
     res.json(response)
   }))

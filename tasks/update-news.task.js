@@ -53,29 +53,32 @@ async function updateNews (app) {
 
   for (let index = 0; index < users.length; index++) {
     const user = users[index]
-    const userMovies = newTmdbIds.filter(tmdbId => {
-      if (user.watchLater.indexOf(tmdbId) !== -1) {
-        return false
-      }
-      if (user.ignored.indexOf(tmdbId) !== -1) {
-        return false
-      }
-      if (user.genres.some(genreId => movies[tmdbId].genres.indexOf(genreId) !== -1)) {
-        return true
-      }
-      return false
-    }).map(tmdbId => ({
-      tmdbId,
-      title: movies[tmdbId].title_fr || movies[tmdbId].title_en || `#${tmdbId}`,
-      poster: movies[tmdbId].poster_fr || movies[tmdbId].poster_en || '',
-      releaseDateEn: movies[tmdbId].release_date_en,
-      releaseDateFr: movies[tmdbId].release_date_fr,
-      overview: movies[tmdbId].overview_fr || movies[tmdbId].overview_en || ''
-    }))
 
-    if (userMovies.length) {
-      await app.email.sendUpdates(user.email, user.name || 'DefaultName', userMovies)
-      emails.push(user.email)
+    if (user.notifications && user.notifications.updatesNews) {
+      const userMovies = newTmdbIds.filter(tmdbId => {
+        if (user.watchLater.indexOf(tmdbId) !== -1) {
+          return false
+        }
+        if (user.ignored.indexOf(tmdbId) !== -1) {
+          return false
+        }
+        if (user.genres.some(genreId => movies[tmdbId].genres.indexOf(genreId) !== -1)) {
+          return true
+        }
+        return false
+      }).map(tmdbId => ({
+        tmdbId,
+        title: movies[tmdbId].title_fr || movies[tmdbId].title_en || `#${tmdbId}`,
+        poster: movies[tmdbId].poster_fr || movies[tmdbId].poster_en || '',
+        releaseDateEn: movies[tmdbId].release_date_en,
+        releaseDateFr: movies[tmdbId].release_date_fr,
+        overview: movies[tmdbId].overview_fr || movies[tmdbId].overview_en || ''
+      }))
+
+      if (userMovies.length) {
+        await app.email.sendUpdates(user.email, user.name, userMovies)
+        emails.push(user.email)
+      }
     }
   }
 

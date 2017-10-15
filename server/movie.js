@@ -65,8 +65,8 @@ const movieRouter = (app) => {
   const editMovieUserPreference = (user, tmdbId, status) => {
     const update = {
       $set: {
-        watchLater: (user.watchLater || []).filter(id => id !== tmdbId),
-        ignored: (user.ignored || []).filter(id => id !== tmdbId)
+        watchLater: (user.watchLater || []).filter(id => id && id !== tmdbId),
+        ignored: (user.ignored || []).filter(id => id && id !== tmdbId)
       }
     }
     if (update.$set[status]) {
@@ -76,12 +76,18 @@ const movieRouter = (app) => {
   }
 
   router.post('/:tmdbId/watch-later/', utils.asyncUse(async (req, res, next) => {
-    await editMovieUserPreference(req.user, +req.params.tmdbId, 'watchLater')
+    const tmdbId = +req.params.tmdbId
+    if (tmdbId > 0) {
+      await editMovieUserPreference(req.user, tmdbId, 'watchLater')
+    }
     res.json({})
   }))
 
   router.post('/:tmdbId/ignored/', utils.asyncUse(async (req, res, next) => {
-    await editMovieUserPreference(req.user, +req.params.tmdbId, 'ignored')
+    const tmdbId = +req.params.tmdbId
+    if (tmdbId > 0) {
+      await editMovieUserPreference(req.user, tmdbId, 'ignored')
+    }
     res.json({})
   }))
 
