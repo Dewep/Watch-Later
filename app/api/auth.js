@@ -15,5 +15,12 @@ export default {
 
   logout (team) {
     return http.delete('/api/auth/', { catchUnauthorized: false })
+  },
+
+  recoverPasswordRequest (email) {
+    return http.post('/api/auth/password/', { email })
+  },
+  recoverPassword (token, password) {
+    return http.post(`/api/auth/password/${token}/`, { password })
   }
 }

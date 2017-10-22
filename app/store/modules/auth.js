@@ -35,6 +35,13 @@ const actions = {
 
   logout ({ commit }) {
     commit('LOGOUT', {})
+  },
+
+  recoverPasswordRequest (store, { email }) {
+    return authApi.recoverPasswordRequest(email)
+  },
+  recoverPassword (store, { token, password }) {
+    return authApi.recoverPassword(token, password)
   }
 }
 

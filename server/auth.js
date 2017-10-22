@@ -4,6 +4,23 @@ const crypto = require('crypto')
 const utils = require('./utils')
 
 const apiKeys = {}
+const passwordTokens = {}
+
+async function requestRecoverPassword (app, email, newAccount) {
+  const user = await app.mongo.getOne('user', { email })
+  const token = await new Promise(function (resolve, reject) {
+    crypto.randomBytes(48, function (err, buffer) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(buffer.toString('hex'))
+      }
+    })
+  })
+  passwordTokens[token] = user.email
+
+  await app.email.sendRecoverPassword(user.email, user.name, token, newAccount)
+}
 
 const authRouter = (app) => {
   const router = express.Router()
@@ -33,6 +50,43 @@ const authRouter = (app) => {
     delete user.password
     apiKeys[apiKey] = user.email
     res.json({ apiKey, user })
+  }))
+
+  router.post('/password/', utils.asyncUse(async (req, res, next) => {
+    await requestRecoverPassword(app, req.body.email, false)
+    res.json({})
+  }))
+
+  router.post('/password/:token/', utils.asyncUse(async (req, res, next) => {
+    const email = passwordTokens[req.params.token]
+    if (!email) {
+      throw new Error('Bad password token')
+    }
+    if (!req.body.password) {
+      throw new Error('You must provide a password')
+    }
+
+    const password = await new Promise(function (resolve, reject) {
+      bcrypt.hash(req.body.password, 8, function (err, hash) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(hash)
+        }
+      })
+    })
+
+    await app.mongo.update('user', { email }, { $set: { password }})
+
+    delete passwordTokens[req.params.token]
+
+    for (const apiKey in apiKeys) {
+      if (apiKeys[apiKey] === email) {
+        delete apiKeys[apiKey]
+      }
+    }
+
+    res.json({})
   }))
 
   return router
@@ -78,3 +132,4 @@ const authorizationCheck = app => {
 module.exports.router = authRouter
 module.exports.routerAuthenticated = authRouterAuthenticated
 module.exports.authorizationCheck = authorizationCheck
+module.exports.requestRecoverPassword = requestRecoverPassword

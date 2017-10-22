@@ -20,6 +20,7 @@
             <button class="btn btn-primary" :class="{ loading: authRequest.loading }" type="submit">Connection</button>
           </div>
         </form>
+        <router-link :to="{ name: 'password' }"><small>Recover your Watch-Later password</small></router-link>
       </div>
     </div>
   </div>
@@ -37,8 +38,8 @@ export default {
 
   data () {
     return {
-      email: 'dewep.net@gmail.com',
-      password: 'toto42'
+      email: '',
+      password: ''
     }
   },
 

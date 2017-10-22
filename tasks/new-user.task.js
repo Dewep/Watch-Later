@@ -1,29 +1,44 @@
-const bcrypt = require('bcryptjs')
+const requestRecoverPassword = require('../server/auth').requestRecoverPassword
 
 async function newUser (app, parameters) {
-  if (!parameters.email || !parameters.password) {
-    throw new Error('You must provide an email and a password')
+  let email = parameters.email
+
+  if (email) {
+    email = email.trim().toLowerCase()
   }
 
-  const password = await new Promise(function (resolve, reject) {
-    bcrypt.hash(parameters.password, 8, function (err, hash) {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(hash)
-      }
-    })
-  })
+  if (!email || !parameters.name) {
+    throw new Error('You must provide an email and a name')
+  }
+
+  let currentUser = null
+  try {
+    currentUser = await app.mongo.getOne('user', { email: email })
+  } catch (err) {
+  }
+  if (currentUser) {
+    throw new Error('This email is already used')
+  }
 
   const user = {
-    email: parameters.email,
-    password,
+    name: parameters.name,
+    email: email,
+    password: '',
     genres: parameters.genres || [28, 12, 35, 80, 18, 10749, 878, 53],
     watchLater: [],
-    ignored: []
+    ignored: [],
+    notifications: {
+      updatesNews: true,
+      inTheatres: true,
+      canBeDownloaded: true,
+      movieChanges: true
+    }
   }
 
   await app.mongo.insert('user', user)
+  await requestRecoverPassword(app, user.email, true)
+
+  return { name: parameters.name, email }
 }
 
 module.exports = newUser
