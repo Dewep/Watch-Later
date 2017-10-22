@@ -7,7 +7,6 @@ class TMDb {
   }
 
   async run () {
-    // this.app.tasks.runTask('update-news').catch(() => {})
   }
 
   imageUrl (filePath, size) {

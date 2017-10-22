@@ -28,6 +28,25 @@
           <input class="form-input" id="admin-user-email" type="email" v-model="email" placeholder="Email of the new account" required>
         </div>
       </div>
+      <div class="form-group" v-if="taskName === 'new-user'">
+        <div class="col-3">
+          <label class="form-label" for="admin-user-admin">Admin</label>
+        </div>
+        <div class="col-9">
+          <label class="form-switch">
+            <input type="checkbox" id="admin-user-admin" v-model="isAdmin">
+            <i class="form-icon"></i> Administrator account
+          </label>
+        </div>
+      </div>
+      <div class="form-group" v-if="taskName === 'movie-in-theatres' || taskName === 'movie-torrents' || taskName === 'movie-changes'">
+        <div class="col-3">
+          <label class="form-label" for="admin-tmdb-id">TMDB ID <sup>optional</sup></label>
+        </div>
+        <div class="col-9">
+          <input class="form-input" id="admin-tmdb-id" type="number" v-model.number="tmdbId" placeholder="TMDB ID of the movie">
+        </div>
+      </div>
       <div class="form-group">
         <div class="col-3"></div>
         <div class="col-9">
@@ -53,13 +72,15 @@ export default {
 
   data () {
     return {
-      tasks: ['check-in-theatres', 'check-movies-changes', 'check-movies-transmi', 'new-user', 'update-news'],
-      taskName: 'update-news',
+      tasks: ['update-all', 'news', 'remove-old-movies', 'movie-changes', 'movie-in-theatres', 'movie-torrents', 'new-user'],
+      taskName: 'update-all',
       loading: false,
       status: null,
       result: {},
       name: '',
-      email: ''
+      email: '',
+      isAdmin: false,
+      tmdbId: ''
     }
   },
 
@@ -74,10 +95,16 @@ export default {
     runTask () {
       this.loading = true
       const parameters = {}
+
       if (this.taskName === 'new-user') {
         parameters.name = this.name
         parameters.email = this.email
+      } else if (this.taskName === 'movie-in-theatres' || this.taskName === 'movie-torrents' || this.taskName === 'movie-changes') {
+        if (this.tmdbId) {
+          parameters.tmdbId = this.tmdbId
+        }
       }
+
       this.runAdminTask({ taskName: this.taskName, parameters }).then(res => {
         this.status = res.status
         this.result = res.result

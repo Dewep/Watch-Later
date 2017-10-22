@@ -24,24 +24,9 @@ module.exports = {
   tasks: {
     trigger: [
       {
-        name: 'update-news',
+        name: 'update-all',
         hours: 13,
         minutes: 30
-      },
-      {
-        name: 'check-movies-changes',
-        hours: 13,
-        minutes: 35
-      },
-      {
-        name: 'check-in-theatres',
-        hours: 13,
-        minutes: 40
-      },
-      {
-        name: 'check-movies-transmi',
-        hours: 13,
-        minutes: 40
       }
     ]
   },

@@ -28,11 +28,12 @@ async function newUser (app, parameters) {
     watchLater: [],
     ignored: [],
     notifications: {
-      updatesNews: true,
-      inTheatres: true,
-      canBeDownloaded: true,
-      movieChanges: true
-    }
+      news: true,
+      movieChanges: true,
+      movieInTheatres: true,
+      movieTorrents: true
+    },
+    isAdmin: parameters.isAdmin || false
   }
 
   await app.mongo.insert('user', user)
