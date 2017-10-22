@@ -37,12 +37,15 @@ async function getOrFetchMovie (app, tmdbId) {
       'release_date_fr': getReleaseDate('FR') || en.release_date || null,
       'release_date_en': getReleaseDate('US') || en.release_date || null,
       'videos_fr': fr.videos.results.map(v => v.key),
-      'videos_en': en.videos.results.map(v => v.key)
+      'videos_en': en.videos.results.map(v => v.key),
+      'in_theatres': null,
+      'torrents': null
     }
 
-    // TODO: add isInTheatres + canBeDownloaded
-
     await app.mongo.insert('movie', movie)
+
+    app.tasks.runTask('movie-in-theatres', { tmdbId })
+    app.tasks.runTask('movie-torrents', { tmdbId })
 
     return movie
   }
