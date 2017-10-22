@@ -15,7 +15,7 @@ async function runModules (modules) {
   }
 }
 
-runModules(['template', 'mongo', 'email', 'tasks', 'server', 'tmdb', 'allocine', 'transmi', 'torrents']).catch(err => {
+runModules(['template', 'mongo', 'email', 'tasks', 'server', 'tmdb', 'torrents']).catch(err => {
   console.error('[run-error]', err)
   process.exit(1)
 })

@@ -6,11 +6,8 @@ module.exports = {
   tmdb: {
     apiKey: null // https://www.themoviedb.org/settings/api
   },
-  transmi: {
-    baseUrl: null // https://github.com/zajdaf/Transmi (add the '/' at the end)
-  },
   torrents: {
-    providers: ['Rarbg', 'Torrent9', 'T411']
+    providers: ['Rarbg', 'Torrent9'] // ['Rarbg', 'Torrent9', 'T411']
   },
   email: {
     mailjet: { // https://app.mailjet.com/account/setup
@@ -19,7 +16,7 @@ module.exports = {
     }
   },
   template: {
-    baseUrl: 'http://127.0.0.1:3221'
+    baseUrl: 'https://wl.dewep.net'
   },
   tasks: {
     trigger: [
