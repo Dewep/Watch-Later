@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import movieApi from '../../api/movie'
 
+const retry = {}
+
 const state = {
   movies: {}
 }
@@ -26,13 +28,13 @@ const getters = {
         movies.isLoading = true
       }
 
-      if (movie.data && movie.data.isInTheatres) {
+      if (movie.data && movie.data.in_theatres) {
         movies.isInTheatres.push(movie.data)
       }
-      if (movie.data && movie.data.canBeDownloaded) {
+      if (movie.data && movie.data.torrents && movie.data.torrents.length) {
         movies.canBeDownloaded.push(movie.data)
       }
-      if (movie.data && (!movie.data.isInTheatres || !movie.data.canBeDownloaded)) {
+      if (movie.data && !movie.data.in_theatres && (!movie.data.torrents || !movie.data.torrents.length)) {
         movies.others.push(movie.data)
       }
     })
@@ -47,6 +49,12 @@ const actions = {
     commit('MOVIE_REQUEST', { tmdbId })
     return movieApi.get(tmdbId).then(data => {
       commit('MOVIE_REQUEST_SUCCESS', { tmdbId, movie: data.movie })
+      if (!data.movie || !data.movie.torrents) {
+        if (!retry[tmdbId] || retry[tmdbId] < 30) {
+          retry[tmdbId] = (retry[tmdbId] || 0) + 1
+          setTimeout(() => actions.loadMovie({ commit }, { tmdbId }), 5000)
+        }
+      }
     }).catch(error => {
       commit('MOVIE_REQUEST_ERROR', { tmdbId, error })
     })
@@ -74,7 +82,8 @@ const mutations = {
   },
 
   MOVIE_REQUEST (state, { tmdbId }) {
-    Vue.set(state, 'movies', { ...state.movies, [tmdbId]: { loading: true }})
+    const data = (state.movies[tmdbId] && state.movies[tmdbId].data) || {}
+    Vue.set(state, 'movies', { ...state.movies, [tmdbId]: { loading: true, data }})
   },
   MOVIE_REQUEST_SUCCESS (state, { tmdbId, movie }) {
     if (movie.runtime) {

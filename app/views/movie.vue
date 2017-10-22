@@ -64,7 +64,8 @@
     <div class="clearfix"></div>
     <section class="torrents">
       <h4>Torrents</h4>
-      <p class="toast toast-error" v-if="!data.torrents || data.torrents.length === 0">Not available for download.</p>
+      <center v-if="!data.torrents"><i class="loading"></i></center>
+      <p class="toast toast-error" v-else-if="data.torrents.length === 0">Not available for download. </p>
       <table class="table table-striped" v-else>
         <tbody>
           <tr v-for="torrent in data.torrents" :key="torrent.slug">

@@ -36,6 +36,19 @@
         </div>
       </div>
     </div>
+    <div class="my-2">
+      <div :id="`my-movies-add`" class="container">
+        <h3 class="s-title">View another movie</h3>
+      </div>
+      <p class="toast">To add a movie on your Watch-Later account, set its <a href="https://www.themoviedb.org/movie" target="_blank">The Movie DB identifier</a> retrievable in the URL (e.g. <kbd>themoviedb.org/movie/<code>315635</code>-spider-man-homecoming</kbd>):</p>
+      <form @submit.prevent="viewMovie()">
+        <div class="input-group">
+          <span class="input-group-addon">themoviedb.org/movie/</span>
+          <input type="number" class="form-input" v-model.number="tmdbId" placeholder="TMDB ID" pattern="^[0-9]+$">
+          <button class="btn btn-primary input-group-btn" type="submit">View movie</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -65,7 +78,8 @@ export default {
         }
       ],
       loading: {},
-      error: {}
+      error: {},
+      tmdbId: ''
     }
   },
 
@@ -79,7 +93,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setMovieIgnored', 'loadMovie'])
+    ...mapActions(['setMovieIgnored', 'loadMovie']),
+    viewMovie () {
+      if (this.tmdbId) {
+        this.$router.push({ name: 'movie', params: { tmdbId: this.tmdbId }})
+      }
+    }
   }
 }
 </script>
