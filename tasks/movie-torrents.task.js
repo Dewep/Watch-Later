@@ -1,6 +1,8 @@
 async function movieTorrents (app, parameters) {
   const logs = {
     query: {},
+    searches: {},
+    emails: [],
     created: 0,
     updated: 0
   }
@@ -18,27 +20,39 @@ async function movieTorrents (app, parameters) {
     if (movie['title_fr']) {
       searchQueries.push(movie['title_fr'])
     }
-    if (movie['title_en']) {
-      searchQueries.push(movie['title_en'])
-    }
-    if (movie['original_title']) {
+    if (movie['original_title'] && searchQueries.indexOf(movie['original_title']) === -1) {
       searchQueries.push(movie['original_title'])
     }
+    if (movie['title_en'] && searchQueries.indexOf(movie['title_en']) === -1) {
+      searchQueries.push(movie['title_en'])
+    }
 
+    logs.searches[movie.tmdb_id] = searchQueries
     const torrents = await app.torrents.searchQueries(searchQueries, 6)
 
     const updateQuery = { 'tmdb_id': movie.tmdb_id }
     const updateAction = { $set: { torrents }}
 
     await app.mongo.update('movie', updateQuery, updateAction)
+    movie.torrents = torrents
 
     if (!movie.torrents) {
       logs.created += 1
     } else if (movie.torrents.length === 0 && torrents.length > 0) {
       logs.updated += 1
-      // TODO: send emails
+
+      const users = await app.mongo.find('user', { 'notification.movieTorrents': true, watchLater: +movie.tmdb_id })
+      for (let index = 0; index < users.length; index++) {
+        await app.email.sendMovieTorrents(users[index].email, users[index].name, movie)
+        logs.emails.push(users[index].email)
+      }
     } else {
       logs.updated += 1
+      const users = await app.mongo.find('user', { 'notification.movieTorrents': true, watchLater: +movie.tmdb_id })
+      for (let index = 0; index < users.length; index++) {
+        await app.email.sendMovieTorrents(users[index].email, users[index].name, movie)
+        logs.emails.push(users[index].email)
+      }
     }
   }
 

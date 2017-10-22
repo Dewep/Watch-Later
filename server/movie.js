@@ -44,8 +44,8 @@ async function getOrFetchMovie (app, tmdbId) {
 
     await app.mongo.insert('movie', movie)
 
-    app.tasks.runTask('movie-in-theatres', { tmdbId })
-    app.tasks.runTask('movie-torrents', { tmdbId })
+    app.tasks.runTask('movie-in-theatres', { tmdbId }).catch(err => console.error('[movie-creation] Error task.movie-in-theatres', err))
+    app.tasks.runTask('movie-torrents', { tmdbId }).catch(err => console.error('[movie-creation] Error task.movie-torrents', err))
 
     return movie
   }

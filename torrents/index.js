@@ -39,17 +39,25 @@ class Torrents {
     const identifiers = {}
 
     for (let index = 0; index < queries.length; index++) {
-      const results = await this.search(queries[index], limitPerQuery)
+      try {
+        const results = await this.search(queries[index], limitPerQuery)
 
-      results.forEach(torrent => {
-        if (!identifiers[torrent.slug]) {
-          identifiers[torrent.slug] = true
-          torrents.push(torrent)
-        }
-      })
+        results.forEach(torrent => {
+          if (!identifiers[torrent.slug]) {
+            identifiers[torrent.slug] = true
+            torrents.push(torrent)
+          }
+        })
+      } catch (err) {
+        console.warn('[torrents] ignore search error:', err)
+      }
     }
 
-    await this._aggregateWithMagnets(torrents)
+    try {
+      await this._aggregateWithMagnets(torrents)
+    } catch (err) {
+      console.warn('[torrents] ignore aggregation error:', err)
+    }
 
     return torrents
   }

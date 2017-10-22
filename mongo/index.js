@@ -33,9 +33,9 @@ class Mongo {
     return db.collection(collectionName)
   }
 
-  async find (collection, filter, sort, limit) {
+  async find (collection, filter, sort, limit, fields) {
     const db = await this._instance(collection)
-    let cursor = db.find(filter)
+    let cursor = db.find(filter, fields)
     if (sort) {
       cursor = cursor.sort(sort)
     }
