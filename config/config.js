@@ -9,6 +9,9 @@ module.exports = {
   transmi: {
     baseUrl: null // https://github.com/zajdaf/Transmi (add the '/' at the end)
   },
+  torrents: {
+    providers: ['Rarbg', 'Torrent9', 'T411']
+  },
   email: {
     mailjet: { // https://app.mailjet.com/account/setup
       username: null,
