@@ -6,8 +6,8 @@ module.exports = {
   tmdb: {
     apiKey: null // https://www.themoviedb.org/settings/api
   },
-  transmi: {
-    baseUrl: null // https://github.com/zajdaf/Transmi (add the '/' at the end)
+  torrents: {
+    providers: ['Rarbg', 'Torrent9'] // ['Rarbg', 'Torrent9', 'T411']
   },
   email: {
     mailjet: { // https://app.mailjet.com/account/setup
@@ -16,29 +16,14 @@ module.exports = {
     }
   },
   template: {
-    baseUrl: 'http://127.0.0.1:3221'
+    baseUrl: 'https://wl.dewep.net'
   },
   tasks: {
     trigger: [
       {
-        name: 'update-news',
+        name: 'update-all',
         hours: 13,
         minutes: 30
-      },
-      {
-        name: 'check-movies-changes',
-        hours: 13,
-        minutes: 35
-      },
-      {
-        name: 'check-in-theatres',
-        hours: 13,
-        minutes: 40
-      },
-      {
-        name: 'check-movies-transmi',
-        hours: 13,
-        minutes: 40
       }
     ]
   },

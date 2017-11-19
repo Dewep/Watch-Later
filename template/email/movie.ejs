@@ -1,0 +1,24 @@
+<%- include('header') %>
+
+<a href="<%= config.baseUrl %>/#/movies/<%= tmdbId %>" style="float:right;border-radius:4px;color:#fff;font-size:16px;padding:8px 15px;text-decoration:none;border:1px solid #4b48d6;display:block;font-weight:600;line-height:18px;background:#5755d9;">View on Watch-Later</a>
+<h1 style="margin:0 0 10px;line-height:36px;">Hello <%= name %></h1>
+<h3 style="margin:0 0 30px"><%= title %></h3>
+
+<div style="margin:10px 0; padding:10px;border-bottom:1px solid #EEE">
+  <% if (poster) { %><a href="<%= config.baseUrl %>/#/movies/<%= tmdbId %>" style="float:left;text-decoration:none;margin-right:20px"><img src="<%= poster %>" style="width:150px"/></a><% } %>
+  <a href="<%= config.baseUrl %>/#/movies/<%= tmdbId %>" style="font-size:22px;color:#5755d9;font-weight:600;text-decoration:none;margin:10px 0;display:block"><%= movieTitle %></a>
+  <% if (releaseDateEn) { %>Release date (US): <%= releaseDateEn %><br><% } %>
+  <% if (releaseDateFr) { %>Release date (FR): <%= releaseDateFr %><br><% } %>
+  <p style="line-height:16px;font-size:12px"><%= overview %></p>
+  <a href="<%= config.baseUrl %>/#/movies/<%= tmdbId %>" style="float:right;border-radius:4px;color:#fff;font-size:12px;padding:3px 7px;text-decoration:none;border:1px solid #4b48d6;display:block;line-height:12px;background:#5755d9;">More information</a>
+  <br style="clear:both">
+  <% if (torrents.length) { %>
+    <ul>
+      <% torrents.forEach(function (torrent) { %>
+        <li><a href="<%= torrent.desc %>" style="color:#5755d9;text-decoration:none"><%= torrent.title %></a> <small><%= torrent.provider %> <%= torrent.size %></small></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
+
+<%- include('footer') %>

@@ -33,6 +33,7 @@
         <tr>
           <th>Release date</th>
           <td>
+            <span v-if="data.in_theatres" class="label label-success mr-2">In theatres</span>
             <span v-if="data.release_date_fr" class="mr-2"><img class="flag" src="/icons/flag-fr.png"> {{ data.release_date_fr.slice(0, 10) }}</span>
             <span v-if="data.release_date_en"><img class="flag" src="/icons/flag-en.png"> {{ data.release_date_en.slice(0, 10) }}</span>
           </td>
@@ -61,14 +62,46 @@
     <blockquote v-if="data.overview_fr"><img class="flag" src="/icons/flag-fr.png"> {{ data.overview_fr }}</blockquote>
     <blockquote v-if="data.overview_en"><img class="flag" src="/icons/flag-en.png"> {{ data.overview_en }}</blockquote>
     <div class="clearfix"></div>
-    <div v-if="data.videos_fr && data.videos_fr.length" class="mt-2">
+    <section class="torrents">
+      <h4>Torrents</h4>
+      <center v-if="!data.torrents"><i class="loading"></i></center>
+      <p class="toast toast-error" v-else-if="data.torrents.length === 0">Not available for download. </p>
+      <table class="table table-striped" v-else>
+        <tbody>
+          <tr v-for="torrent in data.torrents" :key="torrent.slug">
+            <td>
+              <h6><a :href="torrent.desc" target="_blank">{{ torrent.title }} <sup>[{{ torrent.provider }}]</sup></a></h6>
+              <div class="columns">
+                <div class="col-3">
+                  <b>{{ torrent.size }}</b><br>
+                  <small>SIZE</small>
+                </div>
+                <div class="col-3">
+                  <b>{{ torrent.seeds }}</b><br>
+                  <small>SEEDERS</small>
+                </div>
+                <div class="col-3">
+                  <b>{{ torrent.peers }}</b><br>
+                  <small>LEECHERS</small>
+                </div>
+                <div class="col-3">
+                  <b><a :href="torrent.magnet">MAGNET</a></b><br>
+                  <small v-if="torrent.link"><a :href="torrent.link">TORRENT</a></small>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section v-if="data.videos_fr && data.videos_fr.length">
       <h4>French videos <img class="flag" src="/icons/flag-fr.png"></h4>
       <youtube class="my-1" :youtube-id="video" v-for="video in data.videos_fr" :key="video"></youtube>
-    </div>
-    <div v-if="data.videos_en && data.videos_en.length" class="mt-2">
+    </section>
+    <section v-if="data.videos_en && data.videos_en.length">
       <h4>English videos <img class="flag" src="/icons/flag-en.png"></h4>
       <youtube class="my-1" :youtube-id="video" v-for="video in data.videos_en" :key="video"></youtube>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -159,6 +192,20 @@ export default {
 
   > table {
     width: calc(100% - 16rem);
+  }
+
+  > section {
+    margin: 2rem 0;
+
+    h4 {
+      margin: 1rem 0;
+    }
+  }
+
+  .torrents .columns {
+    text-align: center;
+    line-height: .5rem;
+    font-size: 80%;
   }
 
   @media screen and (max-width: 1200px) {

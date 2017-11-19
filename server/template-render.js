@@ -1,6 +1,6 @@
 const utils = require('./utils')
 
-const typesAllowed = ['email/updates', 'email/password']
+const typesAllowed = ['email/news', 'email/password', 'email/movie']
 
 const templateRender = app => {
   return utils.asyncUse(async (req, res, next) => {

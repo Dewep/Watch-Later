@@ -9,7 +9,7 @@ class Tasks {
 
   async runTask (taskName, parameters) {
     try {
-      return await require(`./${taskName}.task`)(this.app, parameters)
+      return await require(`./${taskName}.task`)(this.app, parameters || {})
     } catch (err) {
       console.error(`[tasks.${taskName}] error:`, err)
       throw err
