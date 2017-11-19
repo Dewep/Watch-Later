@@ -27,7 +27,7 @@ const getters = {
       }
 
       if (movie.data && movie.data.isInTheatres) {
-        movies.isInTheatres.push(movie.data)
+        movies.inTheatres.push(movie.data)
       }
       if (movie.data && movie.data.canBeDownloaded) {
         movies.canBeDownloaded.push(movie.data)
