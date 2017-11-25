@@ -46,6 +46,10 @@
           <th>Duration</th>
           <td>{{ data.duration }}</td>
         </tr>
+        <tr v-if="data.vote_average">
+          <th>Average vote</th>
+          <td>{{ data.vote_average }}/10</td>
+        </tr>
         <tr v-if="data.homepage_en || data.homepage_fr">
           <th>Homepage</th>
           <td>
@@ -85,7 +89,7 @@
                   <small>LEECHERS</small>
                 </div>
                 <div class="col-3">
-                  <b><a :href="torrent.magnet">MAGNET</a></b><br>
+                  <b><a :href="torrent.magnet">MAGNET</a> <a :href="torrent.magnet" @click.prevent="copyToClipboard(torrent.magnet)" title="Copy magnet">⌨️</a></b><br>
                   <small v-if="torrent.link"><a :href="torrent.link">TORRENT</a></small>
                 </div>
               </div>
@@ -149,7 +153,27 @@ export default {
   },
 
   methods: {
-    ...mapActions(['loadMovie', 'setMovieWatchLater', 'setMovieIgnored'])
+    ...mapActions(['loadMovie', 'setMovieWatchLater', 'setMovieIgnored']),
+    copyToClipboard(text) {
+      if (window.clipboardData && window.clipboardData.setData) {
+        // IE specific code path to prevent textarea being shown while dialog is visible.
+        return clipboardData.setData('Text', text)
+      } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+        var textarea = document.createElement('textarea')
+        textarea.textContent = text
+        textarea.style.position = 'fixed' // Prevent scrolling to bottom of page in MS Edge.
+        document.body.appendChild(textarea)
+        textarea.select()
+        try {
+          return document.execCommand('copy') // Security exception may be thrown by some browsers.
+        } catch (ex) {
+          console.warn('Copy to clipboard failed.', ex)
+          return false
+        } finally {
+          document.body.removeChild(textarea)
+        }
+      }
+    }
   }
 }
 </script>

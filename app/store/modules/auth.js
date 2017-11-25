@@ -42,6 +42,13 @@ const actions = {
   },
   recoverPassword (store, { token, password }) {
     return authApi.recoverPassword(token, password)
+  },
+
+  updateProfile ({ commit }, data) {
+    return authApi.updateProfile(data).then(user => {
+      commit('UPDATE_PROFILE', user)
+      return user
+    })
   }
 }
 
@@ -96,6 +103,10 @@ const mutations = {
       Vue.set(state.user, 'watchLater', watchLater)
       Vue.set(state.user, 'ignored', ignored)
     }
+  },
+
+  UPDATE_PROFILE (state, user) {
+    Vue.set(state, 'user', user)
   }
 }
 

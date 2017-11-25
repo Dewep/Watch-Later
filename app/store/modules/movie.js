@@ -82,7 +82,7 @@ const mutations = {
   },
 
   MOVIE_REQUEST (state, { tmdbId }) {
-    const data = (state.movies[tmdbId] && state.movies[tmdbId].data) || {}
+    const data = (state.movies[tmdbId] && state.movies[tmdbId].data) || { 'tmdb_id': tmdbId }
     Vue.set(state, 'movies', { ...state.movies, [tmdbId]: { loading: true, data }})
   },
   MOVIE_REQUEST_SUCCESS (state, { tmdbId, movie }) {

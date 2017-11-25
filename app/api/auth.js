@@ -22,5 +22,9 @@ export default {
   },
   recoverPassword (token, password) {
     return http.post(`/api/auth/password/${token}/`, { password })
+  },
+
+  updateProfile (data) {
+    return http.put('/api/auth/', data)
   }
 }

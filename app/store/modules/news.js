@@ -30,6 +30,10 @@ const mutations = {
     Vue.set(state, 'request', null)
     Vue.set(state, 'news', null)
   },
+  UPDATE_PROFILE (state) {
+    Vue.set(state, 'request', null)
+    Vue.set(state, 'news', null)
+  },
 
   NEWS_REQUEST (state) {
     Vue.set(state, 'request', { loading: true })
