@@ -101,3 +101,8 @@ For each movie in our list with `status=watch-later`:
 - If `isInTheatres=true` and FR `release_date` + 14 days < NOW(), set `isInTheatres=false`
 
 Run one time per day.
+
+## TODO
+
+- Search movie
+- Task movie-changes

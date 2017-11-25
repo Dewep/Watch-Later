@@ -49,11 +49,6 @@ async function movieTorrents (app, parameters) {
       }
     } else {
       logs.updated += 1
-      const users = await app.mongo.find('user', { 'notifications.movieTorrents': true, watchLater: +movie.tmdb_id })
-      for (let index = 0; index < users.length; index++) {
-        await app.email.sendMovieTorrents(users[index].email, users[index].name, movie)
-        logs.emails.push(users[index].email)
-      }
     }
   }
 

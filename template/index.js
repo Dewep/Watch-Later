@@ -10,44 +10,6 @@ class Template {
   }
 
   async run () {
-    /* console.log(this.sparamsToString({
-      f: 'email/updates',
-      d: {
-        name: 'Dewep',
-        movies: [
-          {
-            tmdbId: 315837,
-            title: 'Ghost in the Shell',
-            status: 'Released',
-            releaseDateFr: '2017-03-29',
-            releaseDateEn: '2017-03-31',
-            backdrop: 'https://image.tmdb.org/t/p/w1280/jGPSVArC0GS2VVc0aGAqGTjfFOG.jpg',
-            poster: 'https://image.tmdb.org/t/p/w342/hqZFvDYiCKOXbfSZuIEJUuQW29n.jpg'
-          },
-          {
-            tmdbId: 283995,
-            title: 'Guardians of the Galaxy Vol. 2',
-            status: 'Released',
-            releaseDateFr: '2017-03-29',
-            releaseDateEn: '2017-03-31',
-            backdrop: 'https://image.tmdb.org/t/p/w1280/aJn9XeesqsrSLKcHfHP4u5985hn.jpg',
-            poster: 'https://image.tmdb.org/t/p/w342/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg'
-          },
-          {
-            tmdbId: 283995,
-            title: 'Guardians of the Galaxy Vol. 2',
-            status: 'Future',
-            releaseDateFr: '2017-03-29',
-            poster: 'https://image.tmdb.org/t/p/w342/y4MBh0EjBlMuOzv9axM4qJlmhzz.jpg'
-          },
-          {
-            tmdbId: 283995,
-            title: 'Guardians of the Galaxy Vol. 2',
-            status: 'Future'
-          }
-        ]
-      }
-    })) */
   }
 
   async render (file, data, options) {

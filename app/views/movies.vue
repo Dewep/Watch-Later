@@ -38,7 +38,7 @@
     </div>
     <div class="my-2">
       <div :id="`my-movies-add`" class="container">
-        <h3 class="s-title">View another movie</h3>
+        <h3 class="s-title">View another movie <small><a href="https://www.themoviedb.org/movie" target="_blank">The Movie DB</a></small></h3>
       </div>
       <p class="toast">To add a movie on your Watch-Later account, set its <a href="https://www.themoviedb.org/movie" target="_blank">The Movie DB identifier</a> retrievable in the URL (e.g. <kbd>themoviedb.org/movie/<code>315635</code>-spider-man-homecoming</kbd>):</p>
       <form @submit.prevent="viewMovie()">
@@ -49,6 +49,13 @@
         </div>
       </form>
     </div>
+    <div class="my-2">
+      <div :id="`my-movies-add`" class="container">
+        <h3 class="s-title">My ignored movies</h3>
+      </div>
+      <router-link class="btn btn-sm btn-primary m-1" :to="{ name: 'movie', params: { 'tmdbId': tmdbId }}" v-for="tmdbId in user.ignored" :key="tmdbId">#{{ tmdbId }}</router-link>
+    </div>
+    <br><br><br>
   </div>
 </template>
 
@@ -84,7 +91,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['myMovies']),
+    ...mapGetters(['myMovies', 'user']),
     movies () {
       const movies = this.myMovies
       movies.toLoad.forEach(tmdbId => this.loadMovie({ tmdbId }))

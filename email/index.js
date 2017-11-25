@@ -58,8 +58,8 @@ class Email {
     const poster = movie.poster_fr || movie.poster_en || null
     const overview = movie.overview_fr || movie.overview_en || null
     const torrents = movie.torrents || []
-    const releaseDateFr = movie.release_date_fr
-    const releaseDateEn = movie.release_date_en
+    const releaseDateFr = movie.release_date_fr && movie.release_date_fr.slice(0, 10)
+    const releaseDateEn = movie.release_date_en && movie.release_date_en.slice(0, 10)
     const html = await this.app.template.render('email/movie', { name, tmdbId, title, movieTitle, poster, overview, releaseDateFr, releaseDateEn, torrents })
     await this.sendEmail(email, name, title, html)
   }
@@ -71,8 +71,8 @@ class Email {
     const poster = movie.poster_fr || movie.poster_en || null
     const overview = movie.overview_fr || movie.overview_en || null
     const torrents = movie.torrents || []
-    const releaseDateFr = movie.release_date_fr
-    const releaseDateEn = movie.release_date_en
+    const releaseDateFr = movie.release_date_fr && movie.release_date_fr.slice(0, 10)
+    const releaseDateEn = movie.release_date_en && movie.release_date_en.slice(0, 10)
     const html = await this.app.template.render('email/movie', { name, tmdbId, title, movieTitle, poster, overview, releaseDateFr, releaseDateEn, torrents })
     await this.sendEmail(email, name, title, html)
   }
