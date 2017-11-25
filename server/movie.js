@@ -38,6 +38,7 @@ async function getOrFetchMovie (app, tmdbId) {
       'release_date_en': getReleaseDate('US') || en.release_date || null,
       'videos_fr': fr.videos.results.map(v => v.key),
       'videos_en': en.videos.results.map(v => v.key),
+      'vote_average': fr.vote_average || en.vote_average || null,
       'in_theatres': null,
       'torrents': null
     }

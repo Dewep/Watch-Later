@@ -99,6 +99,36 @@ const authRouterAuthenticated = (app) => {
     res.json(req.user)
   })
 
+  router.put('/', utils.asyncUse(async (req, res, next) => {
+    const update = { $set: {}}
+
+    if (req.body.name) {
+      update.$set.name = req.body.name
+    }
+    if (req.body.genres) {
+      update.$set.genres = req.body.genres
+    }
+    if (req.body.excludeGenres) {
+      update.$set.excludeGenres = req.body.excludeGenres
+    }
+    if (req.body.notifications) {
+      update.$set.notifications = {
+        news: req.body.notifications.news || false,
+        movieChanges: req.body.notifications.movieChanges || false,
+        movieInTheatres: req.body.notifications.movieInTheatres || false,
+        movieTorrents: req.body.notifications.movieTorrents || false
+      }
+    }
+
+    await app.mongo.update('user', { email: req.user.email }, update)
+
+    const user = await app.mongo.getOne('user', { email: req.user.email })
+    delete user.password
+    req.user = user
+
+    res.json(req.user)
+  }))
+
   router.delete('/', (req, res, next) => {
     delete apiKeys[req.apiKey]
     res.json({})
