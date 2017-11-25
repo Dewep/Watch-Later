@@ -62,6 +62,9 @@ async function news (app) {
         if (user.ignored.indexOf(tmdbId) !== -1) {
           return false
         }
+        if (user.excludeGenres && user.excludeGenres.some(genreId => movies[tmdbId].genres.indexOf(genreId) !== -1)) {
+          return false
+        }
         if (user.genres.some(genreId => movies[tmdbId].genres.indexOf(genreId) !== -1)) {
           return true
         }

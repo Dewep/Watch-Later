@@ -1,6 +1,7 @@
 async function movieInTheatres (app, parameters) {
   const logs = {
     query: {},
+    emails: [],
     created: 0,
     updated: 0,
     upToDate: 0,
@@ -36,7 +37,12 @@ async function movieInTheatres (app, parameters) {
     } else if (movie['in_theatres'] === false && isInTheatres === true) {
       logs.updated += 1
       await app.mongo.update('movie', updateQuery, updateAction)
-      // TODO: send emails
+
+      const users = await app.mongo.find('user', { 'notifications.movieInTheatres': true, watchLater: +movie.tmdb_id })
+      for (let index = 0; index < users.length; index++) {
+        await app.email.sendMovieInTheatres(users[index].email, users[index].name, movie)
+        logs.emails.push(users[index].email)
+      }
     } else if (movie['in_theatres'] !== isInTheatres) {
       logs.updated += 1
       await app.mongo.update('movie', updateQuery, updateAction)

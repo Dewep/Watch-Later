@@ -25,6 +25,7 @@ async function newUser (app, parameters) {
     email: email,
     password: '',
     genres: parameters.genres || [28, 12, 35, 80, 18, 10749, 878, 53],
+    excludeGenres: parameters.excludeGenres || [],
     watchLater: [],
     ignored: [],
     notifications: {
