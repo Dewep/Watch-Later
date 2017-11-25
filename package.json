@@ -1,6 +1,6 @@
 {
   "name": "watch-later",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Web application for future movies you want to watch",
   "main": "app.js",
   "scripts": {
