@@ -1,21 +1,25 @@
+const moment = require('moment')
+
 async function news (app) {
+  const dateStartTopRated = moment().subtract(2, 'month').format('YYYY-MM-DD')
+
   const topRatedMoviesEN = await app.tmdb.discover({
-    'release_date.gte': '2017-06-19',
+    'release_date.gte': dateStartTopRated,
     'sort_by': 'popularity.desc'
   })
 
   const topRatedMoviesFR = await app.tmdb.discover({
     language: 'fr-FR',
     region: 'FR',
-    'release_date.gte': '2017-06-19',
+    'release_date.gte': dateStartTopRated,
     'sort_by': 'popularity.desc'
   })
 
   const inTheatres = await app.tmdb.discover({
     language: 'fr-FR',
     region: 'FR',
-    'release_date.gte': '2017-08-05',
-    'release_date.lte': '2017-09-05',
+    'release_date.gte': moment().subtract(2, 'weeks').format('YYYY-MM-DD'),
+    'release_date.lte': moment().add(3, 'weeks').format('YYYY-MM-DD'),
     'sort_by': 'popularity.desc'
   })
 
