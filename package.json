@@ -1,6 +1,6 @@
 {
   "name": "watch-later",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Web application for future movies you want to watch",
   "main": "app.js",
   "scripts": {
@@ -17,20 +17,20 @@
   "dependencies": {
     "allocine-api": "^0.1.9",
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "brunch": "^2.10.12",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "lodash": "^4.17.5",
-    "moment": "^2.21.0",
-    "mongodb": "^2.2.31",
-    "request": "^2.83.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "mongodb": "^2.2.35",
+    "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "torrent-search-api": "^1.1.1",
-    "vue": "^2.5.15",
-    "vue-resource": "^1.5.0",
+    "torrent-search-api": "^1.1.3",
+    "vue": "^2.5.16",
+    "vue-resource": "^1.5.1",
     "vue-router": "^2.8.1",
-    "vuex": "^2.3.1"
+    "vuex": "^2.5.0"
   },
   "devDependencies": {
     "babel-brunch": "^6.1.1",
@@ -38,6 +38,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "sass-brunch": "^2.10.4",
-    "vue-brunch": "^2.0.1"
+    "vue-brunch": "^2.0.3"
   }
 }
